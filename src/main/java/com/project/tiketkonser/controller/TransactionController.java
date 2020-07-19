@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.project.tiketkonser.dao.ConcertRepo;
 import com.project.tiketkonser.dao.TransactionRepo;
 import com.project.tiketkonser.dao.UserRepo;
+import com.project.tiketkonser.entity.Concerts;
 import com.project.tiketkonser.entity.Transaction;
 import com.project.tiketkonser.entity.Users;
 import com.project.tiketkonser.util.EmailUtil;
@@ -116,6 +117,7 @@ public class TransactionController {
 	public Transaction acceptTransaction(@PathVariable int transactionId, @RequestParam String acceptTime) {
 		Transaction findTransaction = transactionRepo.findById(transactionId).get();
 		Users findUser = userRepo.findById(findTransaction.getUsers().getId()).get();
+		
 		message ="";
 		findTransaction.setAcceptTime(acceptTime);
 		findTransaction.setStatus("Success");
@@ -125,7 +127,12 @@ public class TransactionController {
 		findTransaction.getTransactionDetail().forEach(val ->{
 //			val.getConcerts().setStokAdmin((val.getGame().getStokAdmin()- val.getQuantity()));
 //			val.getConcerts().setSold(val.getQuantity());
+			Concerts findConcert = concertRepo.findById(val.getConcerts().getId()).get();
 			message += "<h1> Concert Name = " + val.getConcerts().getConcertName()+ "jumlah = " + val.getQuantity() + "harga concert = " + val.getTotalPrice() + "dengan kategori :" + val.getTicketType() + "</h1>";
+			if(val.getTicketType() == "vvip") {
+				findConcert.setVvipCapacity(findConcert.getVvipCapacity() - val.getQuantity());
+				concertRepo.save(findConcert);
+			}
 			concertRepo.save(val.getConcerts());
 		});
 		
