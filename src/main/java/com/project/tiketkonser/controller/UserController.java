@@ -113,4 +113,10 @@ public class UserController {
         throw new RuntimeException("Wrong old password!");
     }
 	
+	@GetMapping("/email/{email}")
+	public void sendEmailForPassword(@PathVariable String email) {
+		Users findUser = userRepo.findByEmail(email).get();
+		this.emailUtil.sendEmail(email, "Change Password", "<h1>Silahkan klik <a href = \"http://localhost:3000/newPassword/"+findUser.getEmail()+"/" + findUser.getId() +"\">Link<a> untuk merubah password</h1>");
+	}
+	
 }
