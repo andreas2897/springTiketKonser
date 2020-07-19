@@ -1,9 +1,16 @@
 package com.project.tiketkonser.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Concerts {
@@ -25,7 +32,10 @@ public class Concerts {
 	private int regularPrice;
 	private int regularCapacity;
 	
-	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "concerts", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Cart> carts;
+		
 	public int getVvipPrice() {
 		return vvipPrice;
 	}
@@ -93,18 +103,17 @@ public class Concerts {
 		this.concertImage = concertImage;
 	}
 
-	
-	public String getConcertDate() {
-		return concertDate;
-	}
-	public void setConcertDate(String concertDate) {
-		this.concertDate = concertDate;
-	}
 	public String getCategory() {
 		return category;
 	}
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	public String getConcertDate() {
+		return concertDate;
+	}
+	public void setConcertDate(String concertDate) {
+		this.concertDate = concertDate;
 	}
 	
 	

@@ -47,9 +47,9 @@ public class UserController {
 		savedUser.setVerified(false);
 		savedUser.setRole("user");
 		
-		String link = "http://localhost:8080/verified?username=" + user.getusername();
+		String link = "http://localhost:8080/verified?username=" + user.getUsername();
 		
-		this.emailUtil.sendEmail(user.getEmail(), "User Registration", "Hi " + user.getusername() + " please kindly paste the link to verified your account " + link );
+		this.emailUtil.sendEmail(user.getEmail(), "User Registration", "Hi " + user.getUsername() + " please kindly paste the link to verified your account " + link );
 		
 		return savedUser;
 	}
