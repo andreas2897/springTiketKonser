@@ -116,7 +116,17 @@ public class UserController {
 	@GetMapping("/email/{email}")
 	public void sendEmailForPassword(@PathVariable String email) {
 		Users findUser = userRepo.findByEmail(email).get();
-		this.emailUtil.sendEmail(email, "Change Password", "<h1>Silahkan klik <a href = \"http://localhost:3000/newPassword/"+findUser.getEmail()+"/" + findUser.getId() +"\">Link<a> untuk merubah password</h1>");
+		this.emailUtil.sendEmail(email, "Change Password", "<h1>Silahkan klik <a href = \"http://localhost:8080/users/password/" + findUser.getEmail() + "/" + findUser.getId() + "\">Link<a> untuk merubah password</h1>");
+	}
+	
+	@GetMapping("/password/{email}/{userId}")
+	public Users newPassword(@PathVariable String email, @PathVariable int userId) {
+		Users findUser = userRepo.findById(userId).get(); 
+				
+		findUser = userRepo.findByEmail(email).get();
+		findUser.setPassword("password");
+		
+		return findUser;
 	}
 	
 }
